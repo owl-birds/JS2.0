@@ -1,0 +1,48 @@
+AJAX
+Asynchronous
+Javascript
+And
+XML
+
+
+unlimited scrolls
+seacrch engine
+
+communicating data between systems and servers, or
+the other way
+
+
+intro to API
+Application Progamming Interface
+
+
+ WEB API 
+    : interface that are web based, http based 
+    
+   
+JSON : Java Script Object Notation
+read
+https://www.json.org/json-en.html
+validator
+https://jsonformatter.org/
+
+
+find status code in mdn for more info
+
+POSTMAN APP 
+https://web.postman.co/workspace/My-Workspace~06a65062-30ce-4f22-8bf3-a3aae8f081b1/overview
+
+
+//
+Query strings and headers
+
+information that we can provide in the url
+   like in the search bar
+
+
+good read
+https://dmitripavlutin.com/fetch-with-json/
+
+
+axios github
+https://github.com/axios/axios

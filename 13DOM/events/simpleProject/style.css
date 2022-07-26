@@ -1,0 +1,119 @@
+p,
+div,
+body,
+main {
+	margin: 0;
+	padding: 0;
+}
+body,
+html {
+	height: 100%;
+	font-family: 'Montserrat', sans-serif;
+}
+/* main */
+main {
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+/* app card */
+.app-wrapper {
+	width: 400px;
+}
+/* image */
+.img-wrapper {
+	width: 400px;
+	border: 1px solid rgba(61, 59, 59, 0.5);
+}
+.img-wrapper img {
+	width: 400px;
+}
+.img-wrapper p {
+	text-align: center;
+	padding-bottom: 50px;
+	font-weight: 700;
+}
+/* counter and score */
+.counter-wrapper {
+	width: 400px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid rgba(61, 59, 59, 0.5);
+	margin-top: 2px;
+}
+/* display */
+#score-display {
+	text-align: center;
+	margin-bottom: 30px;
+}
+#player1-score,
+#player2-score {
+	font-size: 5em;
+	font-weight: 700;
+}
+#score-display div span {
+	padding: 0 20px;
+}
+.winner {
+	font-size: 0.7em;
+	display: none;
+}
+/* limit */
+#limit-wrapper {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 20px;
+}
+#limit label {
+	font-weight: 700;
+}
+input[type=number] {
+	margin-left: 10px;
+	width: 35px;
+	border-radius: 10px;
+	outline: none;
+	padding-left: 10px;
+}
+/* buttons */
+.button-wrapper {
+	margin-bottom: 20px;
+}
+button {
+	padding: 5px 10px;
+	width: 120px;
+	border: none;
+	color: #fff;
+	font-weight: bold;
+}
+
+.player1-btn {
+	background-color: rgba(143, 10, 196, 1);
+}
+.player1-btn:hover {
+	background-color: rgba(143, 10, 196, 0.8);
+}
+
+.player2-btn {
+	background-color: rgba(20, 170, 125, 1);
+}
+.player2-btn:hover {
+	background-color: rgba(20, 170, 125, 0.8);
+}
+
+.reset-btn {
+	background-color: rgba(214, 7, 7, 1);
+}
+.reset-btn:hover {
+	background-color: rgba(214, 7, 7, 0.8);
+}
+
+/* toggling classs */
+.end1 {
+	background-color: rgba(143, 10, 196, 0.8);
+}
+.end2 {
+	background-color: rgba(20, 170, 125, 0.8);
+}

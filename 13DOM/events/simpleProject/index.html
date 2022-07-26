@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>score Counter</title>
+    <!-- costum css -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <main>
+        <div class="app-wrapper">
+            <div class="img-wrapper">
+                <img src="chess.jpg">
+                <p>Score Keeper</p>
+            </div>
+            <div class="counter-wrapper">
+                <div>
+                    <div id="score-display">
+                        <div>
+                            <span id="player1-score">0</span>
+                            to 
+                            <span id="player2-score">0</span>
+                        </div>
+                        <p class="winner">Player <span id="who">1</span> Win</p>
+                    </div>
+                    <div id="limit-wrapper">
+                        <label for="limit">Playing To</label>
+                        <input type="number" value="1" min="1" id="limit" name="limit">
+                    </div>
+                </div>
+                <div class="button-wrapper">
+                    <button class="player1-btn">+1 Player One</button>
+                    <button class="player2-btn">+1 Player Two</button>
+                    <button class="reset-btn">Reset</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

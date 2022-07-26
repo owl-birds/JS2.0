@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV SHOW SEARCH</title>
+    <!-- css -->
+    <link rel="stylesheet" href="style.css">
+    <!-- AXIOS LIBS -->
+    <!-- can be used like this or in nodejs -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    
+    <main>
+        <h1>TV Show Search</h1>
+        <form action="/search">
+            <input type="text" name="name" class="searchBox">
+            <button>SEARCH</button>
+        </form>
+        <div class="error">NOT FOUND</div>
+        <div class="results">
+            <div class="box">
+                <div class="showName">show name</div>
+                <div class="rating">99</div>
+                <div class="summary">LOOOOD ADDA DAS DAD AD ASDA </div>
+            </div>
+        </div>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>

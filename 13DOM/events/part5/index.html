@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>input and change Events</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Type Below : </h1>
+    <input type="text">
+    
+
+    <div onclick="alert('para clicked');">
+        OK IM PARA
+        <button onclick="alert('btn clicked');">event bubbling</button>
+    </div>
+
+    <div id="cont">
+        NEW PARA
+        <button id="bubbling">event bubbling</button>
+    </div>
+
+    <form action="/what">
+        <input type="text" id="ed" name="name">
+        <button>submit</button>
+    </form>
+    
+    <ul id="list">
+        <li>can be deleted</li>
+        <li>can be deleted</li>
+        <p>DSADSADSDASDAS</p>
+    </ul>
+
+    <script src="app.js"></script>
+</body>
+</html>
