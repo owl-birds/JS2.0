@@ -1,0 +1,15 @@
+{
+  "name": "advanced-concept",
+  "version": "1.0.0",
+  "description": "some random stuffs",
+  "main": "jsobject-map.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsc --watch"
+  },
+  "author": "owl",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  }
+}
