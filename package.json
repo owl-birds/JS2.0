@@ -1,0 +1,32 @@
+{
+  "name": "javascript",
+  "version": "1.0.0",
+  "description": "js intro",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owl-birds/JS2.0.git"
+  },
+  "author": "owl",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/owl-birds/JS2.0/issues"
+  },
+  "homepage": "https://github.com/owl-birds/JS2.0#readme",
+  "dependencies": {
+    "d3": "^7.7.0",
+    "decimal.js": "^10.4.3"
+  },
+  "devDependencies": {
+    "@types/d3": "^7.4.0",
+    "@types/node": "^18.11.17",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
+  }
+}
