@@ -40,6 +40,7 @@ http
     // REQUEST
     var method = request.method, headers = request.headers, url = request.url;
     var body = [];
+    // let body: any = [];
     var body_string = "";
     request
         .on("error", function (err) {
@@ -51,6 +52,7 @@ http
     })
         .on("end", function () {
         body_string = Buffer.concat(body).toString();
+        // body = Buffer.concat(body).toString();
         // At this point, we have the headers, method, url and body, and can now
         // do whatever we need to in order to respond to this request.
     });
@@ -64,6 +66,7 @@ http
     // response.setHeader("Content-Type", "application/json");
     // response.statusCode = 200;
     var responseBody = { headers: headers, method: method, url: url, body_string: body_string };
+    // const responseBody = { headers, method, url, body };
     response.write(JSON.stringify(responseBody));
     response.end();
     // Note: the 2 lines above could be replaced with this next one:

@@ -41,6 +41,7 @@ http
     // REQUEST
     const { method, headers, url } = request;
     const body: any[] = [];
+    // let body: any = [];
     let body_string: string = "";
     request
       .on("error", (err) => {
@@ -52,6 +53,7 @@ http
       })
       .on("end", () => {
         body_string = Buffer.concat(body).toString();
+        // body = Buffer.concat(body).toString();
         // At this point, we have the headers, method, url and body, and can now
         // do whatever we need to in order to respond to this request.
       });
@@ -67,6 +69,7 @@ http
     // response.statusCode = 200;
 
     const responseBody = { headers, method, url, body_string };
+    // const responseBody = { headers, method, url, body };
 
     response.write(JSON.stringify(responseBody));
     response.end();
