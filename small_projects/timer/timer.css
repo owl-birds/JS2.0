@@ -1,0 +1,51 @@
+body,
+html,
+div,
+p,
+main,
+section {
+  margin: 0;
+  padding: 0;
+}
+html,
+body,
+main {
+  height: 100%;
+}
+main {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+/*  */
+.display {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  font-size: 2rem;
+  padding: 3rem;
+  color: #fff;
+  border-radius: 20px;
+  background-color: #252329;
+}
+.display div {
+  font-weight: bold;
+  font-family: monospace;
+}
+.buttons {
+  width: fit-content;
+  height: fit-content;
+}
+.buttons button {
+  padding: 10px;
+  color: #fff;
+  font-weight: 700;
+  border: none;
+  background-color: #252329;
+  border-radius: 5px;
+}
+.buttons button:hover {
+  cursor: pointer;
+  background-color: #3b3b3b;
+}

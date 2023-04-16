@@ -477,8 +477,8 @@ console.log(
   threeLevelCMSA(
     worldData,
     findColDataArr(countriesData, "malaysia", "country")!,
-    "malaysia",
-    "2011",
-    "2012"
+    "indonesia",
+    "2010",
+    "2011"
   )
 );
