@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "js intro",
   "main": "index.js",
-  "type": "module",
   "directories": {
     "test": "test"
   },
@@ -22,9 +21,12 @@
   },
   "homepage": "https://github.com/owl-birds/JS2.0#readme",
   "dependencies": {
+    "csv-parser": "^3.0.0",
     "d3": "^7.7.0",
+    "d3-dsv": "^3.0.1",
     "decimal.js": "^10.4.3",
     "formidable": "^2.1.1",
+    "hello-wasm": "file:small_projects/wasm-intro/pkgs/pkg-2",
     "jest": "^29.3.1"
   },
   "devDependencies": {
