@@ -74,7 +74,7 @@ var oneLevelCMSA = function (worldRow, countryRow, firstPeriod, secondPeriod, co
         country: country,
         worldGrowthEffect: worldGrowthEffectResult,
         competitivenessEffect: competitivenessEffectResult,
-        totalChanges: worldGrowthEffectResult
+        exportDifference: worldGrowthEffectResult
             .plus(competitivenessEffectResult)
             .round()
     };

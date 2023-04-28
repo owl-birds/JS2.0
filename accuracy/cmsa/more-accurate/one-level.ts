@@ -88,7 +88,7 @@ const oneLevelCMSA = (
   country: string;
   worldGrowthEffect: Decimal;
   competitivenessEffect: Decimal;
-  totalChanges: Decimal;
+  exportDifference: Decimal;
 } => {
   const worldGrowthRate: Decimal = growthRate(
     worldRow,
@@ -113,7 +113,7 @@ const oneLevelCMSA = (
     country,
     worldGrowthEffect: worldGrowthEffectResult,
     competitivenessEffect: competitivenessEffectResult,
-    totalChanges: worldGrowthEffectResult
+    exportDifference: worldGrowthEffectResult
       .plus(competitivenessEffectResult)
       .round(),
   };

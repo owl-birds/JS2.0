@@ -87,27 +87,63 @@ var competitivenessEffect = function (country_growth_rates, world_growth_rates, 
     }
     return result;
 };
+// TWO LEVEL CMSA
+var twoLevelCMSA = function (country_name, country_data, world_data, first_period, second_period, cmsa_type, // commodity or region or partner
+// default value
+// country_col: string = "country"
+total_col_indicator) {
+    if (total_col_indicator === void 0) { total_col_indicator = "total"; }
+    //
+    var result = {
+        country: country_name,
+        exportDifference: new decimal_js_1.Decimal(0),
+        worldGrowthEffect: new decimal_js_1.Decimal(0),
+        competitivenessEffect: new decimal_js_1.Decimal(0)
+    };
+    // COUNTRY
+    var country_total_exports = totalExportPerYear(country_data, total_col_indicator, cmsa_type);
+    var country_growth_rates = growthRatesCol(country_data, first_period, second_period, cmsa_type);
+    // WORLD
+    var world_total_exports = totalExportPerYear(world_data, total_col_indicator, cmsa_type);
+    var world_growth_rates = growthRatesCol(world_data, first_period, second_period, cmsa_type);
+    var world_growth_rate = (0, helpers_1.growthRate)(world_total_exports, first_period, second_period);
+    //
+    result["exportDifference"] = country_total_exports[second_period].minus(country_total_exports[first_period]);
+    //
+    result["worldGrowthEffect"] = worldGrowthEffect(world_growth_rate, country_total_exports, first_period, second_period);
+    //
+    if (cmsa_type === "commodity") {
+        result["commodityEffect"] = commodityRegEffect(world_growth_rates, world_growth_rate, country_data, first_period, cmsa_type);
+    }
+    if (cmsa_type === "region") {
+        result["regionEffect"] = commodityRegEffect(world_growth_rates, world_growth_rate, country_data, first_period, cmsa_type);
+    }
+    //
+    result["competitivenessEffect"] = competitivenessEffect(country_growth_rates, world_growth_rates, country_data, first_period, cmsa_type);
+    return result;
+};
 // TEST
 var fs = require("fs");
 var csv_parser = require("csv-parser");
 var results_commo = [];
-var file_name = "twoLevelCommo.csv";
-fs.createReadStream("../data/twoLevel/".concat(file_name))
+var file_name_1 = "twoLevelCommo.csv";
+var file_name_2 = "twoLevelRegion.csv";
+fs.createReadStream("../data/twoLevel/".concat(file_name_1))
     .pipe(csv_parser())
     .on("data", function (data) { return results_commo.push(data); })
     .on("end", function () {
     console.log(results_commo);
     // console.log(findColDataArr(results_commo, "indonesia", "country"));
     var cmsa_type = "commodity";
-    var country = "Malaysia";
+    var country = "inDoNesia";
     var world = "dunia";
     var first_period = "2011";
-    var second_period = "2013";
+    var second_period = "2012";
     var country_data = (0, helpers_1.findColDataArr)(results_commo, country, "country");
-    var country_total_export = totalExportPerYear(country_data);
+    var country_total_export = totalExportPerYear(country_data, "total", cmsa_type);
     var country_growth_rates_commodity = growthRatesCol(country_data, first_period, second_period, cmsa_type);
     var world_data = (0, helpers_1.findColDataArr)(results_commo, world, "country");
-    var world_total_export = totalExportPerYear(world_data);
+    var world_total_export = totalExportPerYear(world_data, "total", cmsa_type);
     var world_growth_rate = (0, helpers_1.growthRate)(world_total_export, first_period, second_period);
     var world_growth_rates_commodity = growthRatesCol(world_data, first_period, second_period, cmsa_type);
     console.log(new decimal_js_1.Decimal(9).plus(18));
@@ -122,12 +158,18 @@ fs.createReadStream("../data/twoLevel/".concat(file_name))
     // console.log(world, world_data);
     console.log(country, country_growth_rates_commodity);
     console.log(world, world_growth_rates_commodity);
+    console.log("total", country, country_total_export, "\ndiff: ".concat(country_total_export[second_period].minus(country_total_export[first_period])));
     // WORLD GROWTH EFFECT
     console.log("World Growth Effect ".concat(first_period, " ").concat(second_period), country, worldGrowthEffect((0, helpers_1.growthRate)(world_total_export, first_period, second_period), country_total_export, first_period, second_period));
     // commodity or region effect
     console.log("".concat(cmsa_type, " Effect ").concat(first_period, " ").concat(second_period), country, commodityRegEffect(world_growth_rates_commodity, world_growth_rate, country_data, first_period, cmsa_type));
     // competitiveness effect
     console.log("Competitiveness Effect ".concat(first_period, " ").concat(second_period), country, competitivenessEffect(country_growth_rates_commodity, world_growth_rates_commodity, country_data, first_period, cmsa_type));
+    // differemce
+    console.log("exports diff ".concat(first_period, " ").concat(second_period), country, worldGrowthEffect((0, helpers_1.growthRate)(world_total_export, first_period, second_period), country_total_export, first_period, second_period)
+        .plus(commodityRegEffect(world_growth_rates_commodity, world_growth_rate, country_data, first_period, cmsa_type))
+        .plus(competitivenessEffect(country_growth_rates_commodity, world_growth_rates_commodity, country_data, first_period, cmsa_type)));
+    console.log("CMSA two level, ".concat(country, " ").concat(first_period, "-").concat(second_period), twoLevelCMSA(country, country_data, world_data, first_period, second_period, cmsa_type));
 });
 // console.log(new Decimal(0).plus(9).plus(89));
 // console.log(findColDataArr(countriesData, "indonesia", "country"));

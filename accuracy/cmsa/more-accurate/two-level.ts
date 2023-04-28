@@ -130,11 +130,13 @@ const twoLevelCMSA = (
   world_data: { [index: string]: any }[],
   first_period: string,
   second_period: string,
-  cmsa_type: string
+  cmsa_type: string, // commodity or region or partner
   // default value
   // country_col: string = "country"
+  total_col_indicator: string = "total"
 ): {
   country: string;
+  exportDifference: Decimal;
   worldGrowthEffect: Decimal;
   commodityEffect?: Decimal;
   regionEffect?: Decimal;
@@ -143,16 +145,84 @@ const twoLevelCMSA = (
   //
   const result: {
     country: string;
+    exportDifference: Decimal;
     worldGrowthEffect: Decimal;
     commodityEffect?: Decimal;
     regionEffect?: Decimal;
     competitivenessEffect: Decimal;
   } = {
     country: country_name,
+    exportDifference: new Decimal(0),
     worldGrowthEffect: new Decimal(0),
     competitivenessEffect: new Decimal(0),
   };
-
+  // COUNTRY
+  const country_total_exports = totalExportPerYear(
+    country_data,
+    total_col_indicator,
+    cmsa_type
+  );
+  const country_growth_rates = growthRatesCol(
+    country_data,
+    first_period,
+    second_period,
+    cmsa_type
+  );
+  // WORLD
+  const world_total_exports = totalExportPerYear(
+    world_data,
+    total_col_indicator,
+    cmsa_type
+  );
+  const world_growth_rates = growthRatesCol(
+    world_data,
+    first_period,
+    second_period,
+    cmsa_type
+  );
+  const world_growth_rate = growthRate(
+    world_total_exports!,
+    first_period,
+    second_period
+  );
+  //
+  result["exportDifference"] = country_total_exports![second_period].minus(
+    country_total_exports![first_period]
+  );
+  //
+  result["worldGrowthEffect"] = worldGrowthEffect(
+    world_growth_rate,
+    country_total_exports!,
+    first_period,
+    second_period
+  );
+  //
+  if (cmsa_type === "commodity") {
+    result["commodityEffect"] = commodityRegEffect(
+      world_growth_rates,
+      world_growth_rate,
+      country_data,
+      first_period,
+      cmsa_type
+    );
+  }
+  if (cmsa_type === "region") {
+    result["regionEffect"] = commodityRegEffect(
+      world_growth_rates,
+      world_growth_rate,
+      country_data,
+      first_period,
+      cmsa_type
+    );
+  }
+  //
+  result["competitivenessEffect"] = competitivenessEffect(
+    country_growth_rates,
+    world_growth_rates,
+    country_data,
+    first_period,
+    cmsa_type
+  );
   return result;
 };
 
@@ -160,20 +230,25 @@ const twoLevelCMSA = (
 import * as fs from "fs";
 const csv_parser = require("csv-parser");
 const results_commo: any[] = [];
-const file_name = "twoLevelCommo.csv";
-fs.createReadStream(`../data/twoLevel/${file_name}`)
+const file_name_1 = "twoLevelCommo.csv";
+const file_name_2 = "twoLevelRegion.csv";
+fs.createReadStream(`../data/twoLevel/${file_name_1}`)
   .pipe(csv_parser())
   .on("data", (data: any) => results_commo.push(data))
   .on("end", () => {
     console.log(results_commo);
     // console.log(findColDataArr(results_commo, "indonesia", "country"));
     const cmsa_type = "commodity";
-    const country = "Malaysia";
+    const country = "inDoNesia";
     const world = "dunia";
     const first_period = "2011";
-    const second_period = "2013";
+    const second_period = "2012";
     const country_data = findColDataArr(results_commo, country, "country");
-    const country_total_export = totalExportPerYear(country_data);
+    const country_total_export = totalExportPerYear(
+      country_data,
+      "total",
+      cmsa_type
+    );
     const country_growth_rates_commodity = growthRatesCol(
       country_data!,
       first_period,
@@ -181,7 +256,11 @@ fs.createReadStream(`../data/twoLevel/${file_name}`)
       cmsa_type
     );
     const world_data = findColDataArr(results_commo, world, "country");
-    const world_total_export = totalExportPerYear(world_data);
+    const world_total_export = totalExportPerYear(
+      world_data,
+      "total",
+      cmsa_type
+    );
     const world_growth_rate = growthRate(
       world_total_export!,
       first_period,
@@ -205,6 +284,14 @@ fs.createReadStream(`../data/twoLevel/${file_name}`)
     // console.log(world, world_data);
     console.log(country, country_growth_rates_commodity);
     console.log(world, world_growth_rates_commodity);
+    console.log(
+      "total",
+      country,
+      country_total_export,
+      `\ndiff: ${country_total_export![second_period].minus(
+        country_total_export![first_period]
+      )}`
+    );
 
     // WORLD GROWTH EFFECT
     console.log(
@@ -240,6 +327,47 @@ fs.createReadStream(`../data/twoLevel/${file_name}`)
         world_growth_rates_commodity,
         country_data!,
         first_period,
+        cmsa_type
+      )
+    );
+
+    // differemce
+    console.log(
+      `exports diff ${first_period} ${second_period}`,
+      country,
+      worldGrowthEffect(
+        growthRate(world_total_export!, first_period, second_period),
+        country_total_export!,
+        first_period,
+        second_period
+      )
+        .plus(
+          commodityRegEffect(
+            world_growth_rates_commodity,
+            world_growth_rate,
+            country_data!,
+            first_period,
+            cmsa_type
+          )
+        )
+        .plus(
+          competitivenessEffect(
+            country_growth_rates_commodity,
+            world_growth_rates_commodity,
+            country_data!,
+            first_period,
+            cmsa_type
+          )
+        )
+    );
+    console.log(
+      `CMSA two level, ${country} ${first_period}-${second_period}`,
+      twoLevelCMSA(
+        country,
+        country_data!,
+        world_data!,
+        first_period,
+        second_period,
         cmsa_type
       )
     );
