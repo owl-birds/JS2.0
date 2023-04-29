@@ -7,47 +7,49 @@ import {
   uniqueColNames,
   uniqueCols,
   findTotalExportCol,
+  totalExportPerYear,
 } from "./helpers";
 import { Decimal } from "decimal.js";
 import { countriesData, worldData } from "../data/three-level";
 
 // total all commodity export
-const totalExportPerYear = (
-  data: any[],
-  colName: string = "total",
-  col: string = "commodity",
-  isTotalExist: boolean = true
-): { [index: string]: any } => {
-  // finding if there total exist in our data
-  let totalExport: { [index: string]: any } | null = findColRow(
-    data,
-    colName,
-    col
-  );
-  if (totalExport && isTotalExist) return totalExport;
-  // below if we isTotalDoesnt exist in our data
-  // so we need to find it, by summing up every
-  // export value
-  totalExport = {};
-  // only the year get
-  const cols: string[] = Object.keys(data[0]).filter((col) => Number(col));
-  for (let c of cols) {
-    if (!totalExport[c]) {
-      totalExport[c] = 0;
-      continue;
-    }
-  }
-  for (let row of data) {
-    if (row[col] === colName) continue;
-    for (let c of cols) {
-      totalExport[c] += row[c];
-    }
-  }
-  totalExport[`${col}`] = colName;
-  return totalExport;
-};
+// const totalExportPerYear = (
+//   data: any[],
+//   colName: string = "total",
+//   col: string = "commodity",
+//   isTotalExist: boolean = true
+// ): { [index: string]: any } => {
+//   // finding if there total exist in our data
+//   let totalExport: { [index: string]: any } | null = findColRow(
+//     data,
+//     colName,
+//     col
+//   );
+//   if (totalExport && isTotalExist) return totalExport;
+//   // below if we isTotalDoesnt exist in our data
+//   // so we need to find it, by summing up every
+//   // export value
+//   totalExport = {};
+//   // only the year get
+//   const cols: string[] = Object.keys(data[0]).filter((col) => Number(col));
+//   for (let c of cols) {
+//     if (!totalExport[c]) {
+//       totalExport[c] = 0;
+//       continue;
+//     }
+//   }
+//   for (let row of data) {
+//     if (row[col] === colName) continue;
+//     for (let c of cols) {
+//       totalExport[c] += row[c];
+//     }
+//   }
+//   totalExport[`${col}`] = colName;
+//   return totalExport;
+// };
 
 // world growth based on col list
+
 const growthRateListColArr = (
   data: { [index: string]: any }[],
   firstPeriod: string,
@@ -191,12 +193,8 @@ const threeLevelCMSA = (
   competitivenessEffect: Decimal;
 } => {
   // COUNTRY
-  const totalCountryExport: { [index: string]: any } = totalExportPerYear(
-    countryData,
-    totalIndicator,
-    firstCol,
-    isTotalExist
-  );
+  const totalCountryExport: { [index: string]: any } | null =
+    totalExportPerYear(countryData, totalIndicator, firstCol, isTotalExist);
   // const totalCountryGrowth: Decimal = growthRate(
   //   totalCountryExport,
   //   firstPeriod,
@@ -222,14 +220,14 @@ const threeLevelCMSA = (
       secondCol
     );
   // WORLD
-  const totalWorldExport: { [index: string]: any } = totalExportPerYear(
+  const totalWorldExport: { [index: string]: any } | null = totalExportPerYear(
     worldData,
     totalIndicator,
     firstCol,
     isTotalExist
   );
   const totalWorldGrowth: Decimal = growthRate(
-    totalWorldExport,
+    totalWorldExport!,
     firstPeriod,
     secondPeriod
   );
@@ -242,7 +240,7 @@ const threeLevelCMSA = (
   const wge: Decimal = worldGrowthEffect(
     // totalWorldExport,
     totalWorldGrowth,
-    totalCountryExport,
+    totalCountryExport!,
     firstPeriod,
     secondPeriod
   );

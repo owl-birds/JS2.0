@@ -3,49 +3,49 @@ exports.__esModule = true;
 var helpers_1 = require("./helpers");
 var decimal_js_1 = require("decimal.js");
 // total all commodity export
-var totalExportPerYear = function (data, colName, col, isTotalExist) {
-    if (colName === void 0) { colName = "total"; }
-    if (col === void 0) { col = "commodity"; }
-    if (isTotalExist === void 0) { isTotalExist = true; }
-    if (!data || data.length === 0)
-        return null;
-    // finding if there total exist in our data
-    var totalExport = (0, helpers_1.findColRow)(data, colName, col);
-    if (totalExport && isTotalExist)
-        return totalExport;
-    // below if we isTotalDoesnt exist in our data
-    // so we need to find it, by summing up every
-    // export value
-    totalExport = {};
-    // only the year get
-    var cols = Object.keys(data[0]).filter(function (col) { return Number(col); });
-    for (var _i = 0, cols_1 = cols; _i < cols_1.length; _i++) {
-        var c = cols_1[_i];
-        if (!totalExport[c]) {
-            totalExport[c] = new decimal_js_1.Decimal(0);
-            // totalExport[c] = 0;
-        }
-    }
-    for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
-        var row = data_1[_a];
-        if (row[col] === colName)
-            continue;
-        for (var _b = 0, cols_2 = cols; _b < cols_2.length; _b++) {
-            var c = cols_2[_b];
-            totalExport[c] = totalExport[c].plus(Number(row[c]));
-            // totalExport[c] += Number(row[c]);
-        }
-    }
-    totalExport["".concat(col)] = colName;
-    return totalExport;
-};
+// const totalExportPerYear = (
+//   data: any[] | null,
+//   colName: string = "total",
+//   col: string = "commodity",
+//   isTotalExist: boolean = true
+// ): { [index: string]: any } | null => {
+//   if (!data || data.length === 0) return null;
+//   // finding if there total exist in our data
+//   let totalExport: { [index: string]: any } | null = findColRow(
+//     data,
+//     colName,
+//     col
+//   );
+//   if (totalExport && isTotalExist) return totalExport;
+//   // below if we isTotalDoesnt exist in our data
+//   // so we need to find it, by summing up every
+//   // export value
+//   totalExport = {};
+//   // only the year get
+//   const cols: string[] = Object.keys(data[0]).filter((col) => Number(col));
+//   for (let c of cols) {
+//     if (!totalExport[c]) {
+//       totalExport[c] = new Decimal(0);
+//       // totalExport[c] = 0;
+//     }
+//   }
+//   for (let row of data) {
+//     if (row[col] === colName) continue;
+//     for (let c of cols) {
+//       totalExport[c] = totalExport[c].plus(Number(row[c]));
+//       // totalExport[c] += Number(row[c]);
+//     }
+//   }
+//   totalExport[`${col}`] = colName;
+//   return totalExport;
+// };
 // growth rate per commmodity
 var growthRatesCol = function (data, first_period, second_period, 
 // col: string = "commodity"
 col) {
     var result = {};
-    for (var _i = 0, data_2 = data; _i < data_2.length; _i++) {
-        var row = data_2[_i];
+    for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
+        var row = data_1[_i];
         result[row[col]] = (0, helpers_1.growthRate)(row, first_period, second_period);
     }
     result["col"] = col;
@@ -101,10 +101,10 @@ total_col_indicator) {
         competitivenessEffect: new decimal_js_1.Decimal(0)
     };
     // COUNTRY
-    var country_total_exports = totalExportPerYear(country_data, total_col_indicator, cmsa_type);
+    var country_total_exports = (0, helpers_1.totalExportPerYear)(country_data, total_col_indicator, cmsa_type);
     var country_growth_rates = growthRatesCol(country_data, first_period, second_period, cmsa_type);
     // WORLD
-    var world_total_exports = totalExportPerYear(world_data, total_col_indicator, cmsa_type);
+    var world_total_exports = (0, helpers_1.totalExportPerYear)(world_data, total_col_indicator, cmsa_type);
     var world_growth_rates = growthRatesCol(world_data, first_period, second_period, cmsa_type);
     var world_growth_rate = (0, helpers_1.growthRate)(world_total_exports, first_period, second_period);
     //
@@ -140,10 +140,10 @@ fs.createReadStream("../data/twoLevel/".concat(file_name_1))
     var first_period = "2011";
     var second_period = "2012";
     var country_data = (0, helpers_1.findColDataArr)(results_commo, country, "country");
-    var country_total_export = totalExportPerYear(country_data, "total", cmsa_type);
+    var country_total_export = (0, helpers_1.totalExportPerYear)(country_data, "total", cmsa_type);
     var country_growth_rates_commodity = growthRatesCol(country_data, first_period, second_period, cmsa_type);
     var world_data = (0, helpers_1.findColDataArr)(results_commo, world, "country");
-    var world_total_export = totalExportPerYear(world_data, "total", cmsa_type);
+    var world_total_export = (0, helpers_1.totalExportPerYear)(world_data, "total", cmsa_type);
     var world_growth_rate = (0, helpers_1.growthRate)(world_total_export, first_period, second_period);
     var world_growth_rates_commodity = growthRatesCol(world_data, first_period, second_period, cmsa_type);
     console.log(new decimal_js_1.Decimal(9).plus(18));

@@ -4,45 +4,46 @@ var helpers_1 = require("./helpers");
 var decimal_js_1 = require("decimal.js");
 var three_level_1 = require("../data/three-level");
 // total all commodity export
-var totalExportPerYear = function (data, colName, col, isTotalExist) {
-    if (colName === void 0) { colName = "total"; }
-    if (col === void 0) { col = "commodity"; }
-    if (isTotalExist === void 0) { isTotalExist = true; }
-    // finding if there total exist in our data
-    var totalExport = (0, helpers_1.findColRow)(data, colName, col);
-    if (totalExport && isTotalExist)
-        return totalExport;
-    // below if we isTotalDoesnt exist in our data
-    // so we need to find it, by summing up every
-    // export value
-    totalExport = {};
-    // only the year get
-    var cols = Object.keys(data[0]).filter(function (col) { return Number(col); });
-    for (var _i = 0, cols_1 = cols; _i < cols_1.length; _i++) {
-        var c = cols_1[_i];
-        if (!totalExport[c]) {
-            totalExport[c] = 0;
-            continue;
-        }
-    }
-    for (var _a = 0, data_1 = data; _a < data_1.length; _a++) {
-        var row = data_1[_a];
-        if (row[col] === colName)
-            continue;
-        for (var _b = 0, cols_2 = cols; _b < cols_2.length; _b++) {
-            var c = cols_2[_b];
-            totalExport[c] += row[c];
-        }
-    }
-    totalExport["".concat(col)] = colName;
-    return totalExport;
-};
+// const totalExportPerYear = (
+//   data: any[],
+//   colName: string = "total",
+//   col: string = "commodity",
+//   isTotalExist: boolean = true
+// ): { [index: string]: any } => {
+//   // finding if there total exist in our data
+//   let totalExport: { [index: string]: any } | null = findColRow(
+//     data,
+//     colName,
+//     col
+//   );
+//   if (totalExport && isTotalExist) return totalExport;
+//   // below if we isTotalDoesnt exist in our data
+//   // so we need to find it, by summing up every
+//   // export value
+//   totalExport = {};
+//   // only the year get
+//   const cols: string[] = Object.keys(data[0]).filter((col) => Number(col));
+//   for (let c of cols) {
+//     if (!totalExport[c]) {
+//       totalExport[c] = 0;
+//       continue;
+//     }
+//   }
+//   for (let row of data) {
+//     if (row[col] === colName) continue;
+//     for (let c of cols) {
+//       totalExport[c] += row[c];
+//     }
+//   }
+//   totalExport[`${col}`] = colName;
+//   return totalExport;
+// };
 // world growth based on col list
 var growthRateListColArr = function (data, firstPeriod, secondPeriod, col) {
     if (col === void 0) { col = "commodity"; }
     var growthRateList = [];
-    for (var _i = 0, data_2 = data; _i < data_2.length; _i++) {
-        var row = data_2[_i];
+    for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
+        var row = data_1[_i];
         var growth = {};
         growth["".concat(col)] = row[col];
         growth["rate"] = (0, helpers_1.growthRate)(row, firstPeriod, secondPeriod);
@@ -54,8 +55,8 @@ var growthRateListColObj = function (data, firstPeriod, secondPeriod, col) {
     if (col === void 0) { col = "commodity"; }
     //
     var growthRates = {};
-    for (var _i = 0, data_3 = data; _i < data_3.length; _i++) {
-        var row = data_3[_i];
+    for (var _i = 0, data_2 = data; _i < data_2.length; _i++) {
+        var row = data_2[_i];
         growthRates["".concat(row[col])] = (0, helpers_1.growthRate)(row, firstPeriod, secondPeriod);
     }
     return growthRates;
@@ -64,8 +65,8 @@ var growthRateNBaseExport2Col = function (data, firstPeriod, secondPeriod, first
     if (firstCol === void 0) { firstCol = "commodity"; }
     if (secondCol === void 0) { secondCol = "region"; }
     var result = [];
-    for (var _i = 0, data_4 = data; _i < data_4.length; _i++) {
-        var row = data_4[_i];
+    for (var _i = 0, data_3 = data; _i < data_3.length; _i++) {
+        var row = data_3[_i];
         var growth = {};
         growth["".concat(firstCol)] = row[firstCol];
         growth["".concat(secondCol)] = row[secondCol];
@@ -142,7 +143,7 @@ var threeLevelCMSA = function (worldData, countryData, countryName, firstPeriod,
     if (firstCol === void 0) { firstCol = "commodity"; }
     if (secondCol === void 0) { secondCol = "region"; }
     // COUNTRY
-    var totalCountryExport = totalExportPerYear(countryData, totalIndicator, firstCol, isTotalExist);
+    var totalCountryExport = (0, helpers_1.totalExportPerYear)(countryData, totalIndicator, firstCol, isTotalExist);
     // const totalCountryGrowth: Decimal = growthRate(
     //   totalCountryExport,
     //   firstPeriod,
@@ -152,7 +153,7 @@ var threeLevelCMSA = function (worldData, countryData, countryName, firstPeriod,
     var countryCommoditiesGrowth = growthRateListColObj(totalCountryExportCommodities, firstPeriod, secondPeriod, firstCol);
     var countryCommoditiesRegionGrowth = growthRateNBaseExport2Col(countryData, firstPeriod, secondPeriod, firstCol, secondCol);
     // WORLD
-    var totalWorldExport = totalExportPerYear(worldData, totalIndicator, firstCol, isTotalExist);
+    var totalWorldExport = (0, helpers_1.totalExportPerYear)(worldData, totalIndicator, firstCol, isTotalExist);
     var totalWorldGrowth = (0, helpers_1.growthRate)(totalWorldExport, firstPeriod, secondPeriod);
     var worldCommoditiesGrowthArr = growthRateListColArr(worldData, firstPeriod, secondPeriod, firstCol);
     var worldCommoditiesGrowthObj = growthRateListColObj(worldData, firstPeriod, secondPeriod, firstCol);
@@ -177,19 +178,19 @@ var threeLevelCMSA = function (worldData, countryData, countryName, firstPeriod,
 };
 // TEST
 console.log((0, helpers_1.findRow2Col)((0, helpers_1.findColDataArr)(three_level_1.countriesData, "indonesia"), "A", "D"));
-console.log(totalExportPerYear(three_level_1.worldData, "total", "commodity"));
+console.log((0, helpers_1.totalExportPerYear)(three_level_1.worldData, "total", "commodity"));
 console.log(1220758 / 2);
-console.log((0, helpers_1.growthRate)(totalExportPerYear(three_level_1.worldData, "total", "commodity"), "2011", "2012"));
+console.log((0, helpers_1.growthRate)((0, helpers_1.totalExportPerYear)(three_level_1.worldData, "total", "commodity"), "2011", "2012"));
 console.log((589362 - 615087) / 615087);
 console.log((0, helpers_1.findColDataArr)((0, helpers_1.findColDataArr)(three_level_1.countriesData, "indonesia"), "A", "commodity"));
 console.log((0, helpers_1.sumBased2Col)((0, helpers_1.findColDataArr)(three_level_1.countriesData, "indonesia"), "2012", "A", "commodity"));
-console.log(totalExportPerYear((0, helpers_1.findColDataArr)(three_level_1.countriesData, "indonesia"), 
+console.log((0, helpers_1.totalExportPerYear)((0, helpers_1.findColDataArr)(three_level_1.countriesData, "indonesia"), 
 // worldData,
 "total", "commodity"
 // false
 ));
 console.log("world growth effect");
-console.log(worldGrowthEffect((0, helpers_1.growthRate)(totalExportPerYear(three_level_1.worldData, "total", "commodity"), "2010", "2012"), totalExportPerYear((0, helpers_1.findColDataArr)(three_level_1.countriesData, "singapura", "country"), "total", "commodity"), "2010", "2012"));
+console.log(worldGrowthEffect((0, helpers_1.growthRate)((0, helpers_1.totalExportPerYear)(three_level_1.worldData, "total", "commodity"), "2010", "2012"), (0, helpers_1.totalExportPerYear)((0, helpers_1.findColDataArr)(three_level_1.countriesData, "singapura", "country"), "total", "commodity"), "2010", "2012"));
 // console.log(growthRateListCol(worldData, "2010", "2011", "commodity"));
 console.log(growthRateListColArr((0, helpers_1.findTotalExportCol)((0, helpers_1.findColDataArr)(three_level_1.countriesData, "indonesia"), "commodity"
 // "region"
@@ -207,7 +208,7 @@ console.log((0, helpers_1.findTotalExportCol)((0, helpers_1.findColDataArr)(thre
 ));
 // COMMODITY EFFECT
 console.log("comodity effect");
-console.log(commodityEffect((0, helpers_1.growthRate)(totalExportPerYear(three_level_1.worldData, "total", "commodity"), "2010", "2012"), growthRateListColArr(three_level_1.worldData, "2010", "2012", "commodity"), (0, helpers_1.findTotalExportCol)((0, helpers_1.findColDataArr)(three_level_1.countriesData, "singapura"), "commodity"), "2010"));
+console.log(commodityEffect((0, helpers_1.growthRate)((0, helpers_1.totalExportPerYear)(three_level_1.worldData, "total", "commodity"), "2010", "2012"), growthRateListColArr(three_level_1.worldData, "2010", "2012", "commodity"), (0, helpers_1.findTotalExportCol)((0, helpers_1.findColDataArr)(three_level_1.countriesData, "singapura"), "commodity"), "2010"));
 console.log(growthRateListColObj(
 // worldData,
 (0, helpers_1.findTotalExportCol)((0, helpers_1.findColDataArr)(three_level_1.countriesData, "indonesia", "country"), "commodity"), "2010", "2011", "commodity"));
@@ -255,4 +256,4 @@ console.log(competitivenessEffect(growthRateListColObj((0, helpers_1.findTotalEx
 //     "commodity"
 //   )
 // );
-console.log(threeLevelCMSA(three_level_1.worldData, (0, helpers_1.findColDataArr)(three_level_1.countriesData, "malaysia", "country"), "malaysia", "2011", "2012"));
+console.log(threeLevelCMSA(three_level_1.worldData, (0, helpers_1.findColDataArr)(three_level_1.countriesData, "malaysia", "country"), "indonesia", "2010", "2011"));

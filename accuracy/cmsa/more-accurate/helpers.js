@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-exports.sumBased2Col = exports.growthRate = exports.findTotalExportCol = exports.uniqueColNames = exports.uniqueCols = exports.findColDataArr = exports.findRow2Col = exports.findColRow = void 0;
+exports.totalExportPerYear = exports.sumBased2Col = exports.growthRate = exports.findTotalExportCol = exports.uniqueColNames = exports.uniqueCols = exports.findColDataArr = exports.findRow2Col = exports.findColRow = void 0;
 var decimal_js_1 = require("decimal.js");
 // FIND DATA
 // ROW
@@ -100,3 +100,42 @@ var sumBased2Col = function (data, numColName, categoricColName, categoricCol) {
     return totalSum;
 };
 exports.sumBased2Col = sumBased2Col;
+// some operations
+// total all commodity export
+var totalExportPerYear = function (data, colName, col, isTotalExist) {
+    if (colName === void 0) { colName = "total"; }
+    if (col === void 0) { col = "commodity"; }
+    if (isTotalExist === void 0) { isTotalExist = true; }
+    if (!data || data.length === 0)
+        return null;
+    // finding if there total exist in our data
+    var totalExport = (0, exports.findColRow)(data, colName, col);
+    if (totalExport && isTotalExist)
+        return totalExport;
+    // below if we isTotalDoesnt exist in our data
+    // so we need to find it, by summing up every
+    // export value
+    totalExport = {};
+    // only the year get
+    var cols = Object.keys(data[0]).filter(function (col) { return Number(col); });
+    for (var _i = 0, cols_3 = cols; _i < cols_3.length; _i++) {
+        var c = cols_3[_i];
+        if (!totalExport[c]) {
+            totalExport[c] = new decimal_js_1.Decimal(0);
+            // totalExport[c] = 0;
+        }
+    }
+    for (var _a = 0, data_6 = data; _a < data_6.length; _a++) {
+        var row = data_6[_a];
+        if (row[col] === colName)
+            continue;
+        for (var _b = 0, cols_4 = cols; _b < cols_4.length; _b++) {
+            var c = cols_4[_b];
+            totalExport[c] = totalExport[c].plus(Number(row[c]));
+            // totalExport[c] += Number(row[c]);
+        }
+    }
+    totalExport["".concat(col)] = colName;
+    return totalExport;
+};
+exports.totalExportPerYear = totalExportPerYear;
