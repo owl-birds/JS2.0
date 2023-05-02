@@ -74,9 +74,7 @@ var oneLevelCMSA = function (worldRow, countryRow, firstPeriod, secondPeriod, co
         country: country,
         worldGrowthEffect: worldGrowthEffectResult,
         competitivenessEffect: competitivenessEffectResult,
-        exportDifference: worldGrowthEffectResult
-            .plus(competitivenessEffectResult)
-            .round()
+        exportDifference: new decimal_js_1.Decimal(countryRow[secondPeriod]).minus(countryRow[firstPeriod])
     };
 };
 console.log((0, helpers_1.growthRate)(data[0], "2010", "2011"));

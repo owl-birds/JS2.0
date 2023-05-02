@@ -113,9 +113,9 @@ const oneLevelCMSA = (
     country,
     worldGrowthEffect: worldGrowthEffectResult,
     competitivenessEffect: competitivenessEffectResult,
-    exportDifference: worldGrowthEffectResult
-      .plus(competitivenessEffectResult)
-      .round(),
+    exportDifference: new Decimal(countryRow[secondPeriod]).minus(
+      countryRow[firstPeriod]
+    ),
   };
 };
 
