@@ -257,3 +257,8 @@ console.log(competitivenessEffect(growthRateListColObj((0, helpers_1.findTotalEx
 //   )
 // );
 console.log(threeLevelCMSA(three_level_1.worldData, (0, helpers_1.findColDataArr)(three_level_1.countriesData, "malaysia", "country"), "indonesia", "2010", "2011"));
+console.log((0, helpers_1.findTotalExportCol)((0, helpers_1.findColDataArr)(three_level_1.countriesData, "indonesia"), 
+// worldData,
+"commodity"
+// "region"
+));

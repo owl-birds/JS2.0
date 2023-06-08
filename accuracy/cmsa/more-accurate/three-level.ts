@@ -480,3 +480,12 @@ console.log(
     "2011"
   )
 );
+
+console.log(
+  findTotalExportCol(
+    findColDataArr(countriesData, "indonesia")!,
+    // worldData,
+    "commodity"
+    // "region"
+  )
+);
