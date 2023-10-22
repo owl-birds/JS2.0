@@ -100,6 +100,7 @@ dest_path, file_ext) {
                     src_path: src_path,
                     dest_path: dest_path,
                     copied_files_path: copied_files_path,
+                    file_ext: file_ext,
                     is_successful: true,
                     filenames_in_src: files_name,
                 }];

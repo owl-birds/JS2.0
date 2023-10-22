@@ -70,6 +70,7 @@ export const copy_files_dest_cow = async (
     src_path,
     dest_path,
     copied_files_path,
+    file_ext,
     is_successful: true,
     filenames_in_src: files_name,
   };
